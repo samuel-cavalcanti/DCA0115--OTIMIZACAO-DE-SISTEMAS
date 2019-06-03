@@ -79,8 +79,8 @@ endfunction
 
 function new_velocity = update_speed(old_particle,best_particle,problem_size)
     w = 0.5
-    c_1 = 1.8
-    c_2 = 2
+    c_1 = 1.8 // 1.2 1.4 1.8
+    c_2 = 2 //   1.4 1.8 2.0
     reduce = 0.01
     limit = problem_size 
    
@@ -171,19 +171,41 @@ function print_population(population, epoch)
     disp(" ")
 endfunction
 
-problem_size = [500,-500]
-population_size = 8
-epochs = 3000
+function test_PSO(population_size,file_name)
+    problem_size = [500,-500]
+    epochs = 3000
+    
+    solutions = list()
 
-solutions = list()
+    csv_matrix = []
+    
+    for i=1:100
+        solutions($+1) = particle_swarm(problem_size,population_size,epochs)
+        csv_matrix($+1) =  solutions($).cost
+      
+    end
+    
+    csvWrite(csv_matrix,file_name)
+    
+    disp(file_name + "savend !!")
+    
+endfunction
 
-csv_matrix = []
 
-for i=1:100
-    solutions($+1) = particle_swarm(problem_size,population_size,epochs)
-    csv_matrix($+1) =  solutions($).cost
-    disp( csv_matrix($))
+
+population_size_list = list(4,8,16)
+
+for population_size=population_size_list
+    file_name =  "PSO" + string(population_size) + ".csv"
+    test_PSO(population_size,file_name)
 end
 
-csvWrite(csv_matrix,"PSO.csv")
+
+
+
+
+
+
+
+
 

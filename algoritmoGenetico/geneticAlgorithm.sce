@@ -341,33 +341,32 @@ function new_population =  remove_best_solution(population,best)
     
 endfunction
 
-population_size = 8
-problem_size = [500,-500]
-p_mutation = 0.03
-epochs = 3000
-max_variance =0.01
-
-solutions = list()
-
-csv_matrix = []
-for i=1:100
-    solutions($+1) = geneticAlgorithm(population_size,problem_size,p_mutation,epochs,max_variance)
-    csv_matrix($+1) = solutions($).score
+function test_GA(population_size,file_name)
     
+    problem_size = [500,-500]
+    p_mutation = 0.01
+    epochs = 3000
+    max_variance =0.01
+
+    solutions = list()
+
+    csv_matrix = []
+    for i=1:100
+        solutions($+1) = geneticAlgorithm(population_size,problem_size,p_mutation,epochs,max_variance)
+        csv_matrix($+1) = solutions($).score
+    
+    end
+
+    csvWrite(csv_matrix,file_name)
+    
+    disp(file_name + "savend !!")
+    
+    
+endfunction
+
+population_size_list = list(4,8,16)
+
+for population_size=population_size_list
+    file_name =  "GA_mutation_0.01_" + string(population_size) + "u.csv"
+    test_GA(population_size,file_name)
 end
-
-csvWrite(csv_matrix,"GA.csv")
-
-
-//[x,y]=meshgrid(-500:5:500,-500:5:500);
-//
-//
-//z=-x.*sin(sqrt(abs(x)))-y.*sin(sqrt(abs(y)));
-//
-//x=x/250;
-//y=y/250;
-//// r: Rosenbrock's function
-//r1=(y-x.^2).^2+(1-x).^2;
-//
-//w14 = z.*exp(sin(r1));
-
